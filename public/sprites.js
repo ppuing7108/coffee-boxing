@@ -60,6 +60,8 @@ export function preloadEffects() {
   return Promise.all(Object.keys(manifest.effects).map((n) => loadImage(`assets/effects/${n}.png`)));
 }
 
+const CANVAS_RES = 2;
+
 // 캔버스는 다음 그림을 그리기 전까지 이전 프레임을 유지하므로 동작이 바뀔 때 빈 프레임이 생기지 않는다
 export class Sprite {
   // el: 256×256 박스, corner: 'red'|'blue' (청코너는 좌우 반전)
@@ -72,11 +74,15 @@ export class Sprite {
     const size = manifest.frameSize;
     el.classList.add('sprite', `corner-${corner}`);
     el.style.width = el.style.height = `${size}px`;
-    el.style.transform = corner === 'blue' ? 'scaleX(-1)' : '';
+    el.style.setProperty('--flip', corner === 'blue' ? -1 : 1); // 청코너는 좌우 반전 (크기는 CSS .fighter)
+    // 화면에서 확대해 보여주므로 캔버스 내부 해상도를 높여 고품질 보간으로 그린다
     this.canvas = document.createElement('canvas');
-    this.canvas.width = this.canvas.height = size;
+    this.canvas.width = this.canvas.height = size * CANVAS_RES;
+    this.canvas.style.width = this.canvas.style.height = `${size}px`;
     el.replaceChildren(this.canvas);
     this.ctx = this.canvas.getContext('2d');
+    this.ctx.imageSmoothingQuality = 'high';
+    this.ctx.scale(CANVAS_RES, CANVAS_RES);
   }
 
   async play(action) {

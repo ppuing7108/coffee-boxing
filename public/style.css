@@ -51,17 +51,18 @@ button.bet.blue { background: #1976d2; }
 .ring-wrap { position: relative; width: 100%; aspect-ratio: 16 / 9; overflow: hidden; margin-top: 8px; }
 .ring { position: absolute; left: 0; top: 0; width: 1280px; height: 720px; transform-origin: 0 0;
   background: url(assets/ui/ring.png) center / cover, radial-gradient(#3a3a5a, #111); }
-.fighter { position: absolute; top: 360px; } /* 발 기준점(128,240)이 바닥선 y=600에 오도록 */
-.fighter.red { left: 342px; }
-.fighter.blue { left: 682px; }
+/* 프레임의 발 기준점(128,240)을 --feet-x/y에 두고, 발을 중심으로 확대·반전 (값은 fight-player.js) */
+.fighter { position: absolute; left: calc(var(--feet-x, 0px) - 128px); top: calc(var(--feet-y, 0px) - 240px);
+  transform-origin: 128px 240px;
+  transform: scale(calc(var(--fighter-scale, 1) * var(--flip, 1)), var(--fighter-scale, 1)); }
 .sprite { background-repeat: no-repeat; }
 .sprite canvas { display: block; }
 .sprite.placeholder { border: 4px dashed #fff; }
 .sprite.placeholder.corner-red { background: rgba(211, 47, 47, 0.6); }
 .sprite.placeholder.corner-blue { background: rgba(25, 118, 210, 0.6); }
-.effect { position: absolute; pointer-events: none; }
-.float-text { position: absolute; font-size: 40px; font-weight: 900; color: #ff5252; animation: float-up 0.9s forwards; }
-@keyframes float-up { to { transform: translateY(-60px); opacity: 0; } }
+.effect { position: absolute; pointer-events: none; transform: scale(1.5); }
+.float-text { position: absolute; font-size: 56px; transform: translateX(-50%); font-weight: 900; color: #ff5252; animation: float-up 0.9s forwards; }
+@keyframes float-up { to { transform: translate(-50%, -60px); opacity: 0; } }
 .banner { position: absolute; left: 0; right: 0; top: 200px; font-size: 140px; font-weight: 900; color: #f5c518;
   text-shadow: 0 0 20px #000; opacity: 0; transition: opacity 0.2s; pointer-events: none; }
 .banner.show { opacity: 1; }

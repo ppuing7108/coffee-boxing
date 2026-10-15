@@ -2,8 +2,12 @@ import { Sprite, spawnEffect, imageExists, preloadFighter, preloadEffects } from
 import { exchangeIndexAt, impactTime, hpAt, moveAction, hitAction, describe } from './timeline.js';
 
 const KO_MS = 3000;
-// 링(1280×720) 기준 선수 발 위치
-const FEET = { red: { x: 470, y: 600 }, blue: { x: 810, y: 600 } };
+// 링(1280×720) 기준 선수 발 위치와 화면 확대 배율 (리소스는 256px 그대로, 그릴 때만 키움)
+const FEET = { red: { x: 460, y: 650 }, blue: { x: 820, y: 650 } };
+const FIGHTER_SCALE = 1.7;
+// 발 기준 높이(원본 px × 배율): 타격 이펙트는 얼굴 근처, 데미지 숫자는 머리 위
+const HIT_Y = 170 * FIGHTER_SCALE;
+const TEXT_Y = 230 * FIGHTER_SCALE;
 
 // payload: fight:script, serverNow: () => 서버 시각(ms), els: 화면 요소들, onResult: KO 연출 후 호출
 export function playFight(payload, serverNow, els, onResult) {
@@ -15,7 +19,10 @@ export function playFight(payload, serverNow, els, onResult) {
     red: new Sprite(els.red, { skin: fighters.red.skin, corner: 'red' }),
     blue: new Sprite(els.blue, { skin: fighters.blue.skin, corner: 'blue' }),
   };
+  els.ring.style.setProperty('--fighter-scale', FIGHTER_SCALE);
   for (const c of ['red', 'blue']) {
+    els[c].style.setProperty('--feet-x', `${FEET[c].x}px`);
+    els[c].style.setProperty('--feet-y', `${FEET[c].y}px`);
     els.names[c].textContent = fighters[c].name;
     sprites[c].play('idle');
   }
@@ -47,8 +54,8 @@ export function playFight(payload, serverNow, els, onResult) {
       const hit = hitAction(ex.dmg[c], ex.crit);
       if (hit) {
         sprites[c].play(hit);
-        spawnEffect(els.ring, ex.crit ? 'crit_spark' : 'hit_spark', FEET[c].x, FEET[c].y - 170);
-        floatText(els.ring, `-${ex.dmg[c]}`, FEET[c].x, FEET[c].y - 230);
+        spawnEffect(els.ring, ex.crit ? 'crit_spark' : 'hit_spark', FEET[c].x, FEET[c].y - HIT_Y);
+        floatText(els.ring, `-${ex.dmg[c]}`, FEET[c].x, FEET[c].y - TEXT_Y);
       }
     }
     if (ex.crit || hitAction(ex.dmg.red, false) === 'hit_heavy' || hitAction(ex.dmg.blue, false) === 'hit_heavy') {
@@ -58,7 +65,7 @@ export function playFight(payload, serverNow, els, onResult) {
     }
     if (ex.result === 'RED_BLOCK' || ex.result === 'BLUE_BLOCK') {
       const c = ex.result === 'RED_BLOCK' ? 'red' : 'blue';
-      spawnEffect(els.ring, 'block_spark', FEET[c].x, FEET[c].y - 170);
+      spawnEffect(els.ring, 'block_spark', FEET[c].x, FEET[c].y - HIT_Y);
     }
     if (ex.ko) showKo();
   }

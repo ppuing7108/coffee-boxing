@@ -18,6 +18,14 @@ test('시드 1만 개 전부 7~30초', () => {
   }
 });
 
+test('시원한 경기: 평균 9~13초 (데미지 1.7배)', () => {
+  let total = 0;
+  const N = 2000;
+  for (let seed = 1; seed <= N; seed++) total += generateFight(seed).duration;
+  const mean = total / N;
+  assert.ok(mean >= 9 && mean <= 13, `mean ${mean.toFixed(1)}s`);
+});
+
 test('홍코너 승률 50% ±2% (공정성)', () => {
   let redWins = 0;
   const N = 10000;

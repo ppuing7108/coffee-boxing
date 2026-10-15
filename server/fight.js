@@ -6,17 +6,17 @@ export const MIN_DURATION = 7;
 export const MAX_DURATION = 30;
 export const MAX_ATTEMPTS = 50;
 
-// BASE_DAMAGE[내 기술][상대 기술] = 상대에게 주는 기본 데미지 (설계 4.2)
+// BASE_DAMAGE[내 기술][상대 기술] = 상대에게 주는 기본 데미지 (설계 4.2의 시작값 × 1.7)
 export const BASE_DAMAGE = {
-  JAB:      { JAB: 6,  HOOK: 6,  UPPERCUT: 0,  BLOCK: 0,  DODGE: 6 },
-  HOOK:     { JAB: 0,  HOOK: 12, UPPERCUT: 12, BLOCK: 3,  DODGE: 0 },
-  UPPERCUT: { JAB: 20, HOOK: 0,  UPPERCUT: 20, BLOCK: 20, DODGE: 0 },
+  JAB:      { JAB: 10, HOOK: 10, UPPERCUT: 0,  BLOCK: 0,  DODGE: 10 },
+  HOOK:     { JAB: 0,  HOOK: 20, UPPERCUT: 20, BLOCK: 5,  DODGE: 0 },
+  UPPERCUT: { JAB: 34, HOOK: 0,  UPPERCUT: 34, BLOCK: 34, DODGE: 0 },
   BLOCK:    { JAB: 0,  HOOK: 0,  UPPERCUT: 0,  BLOCK: 0,  DODGE: 0 },
-  DODGE:    { JAB: 0,  HOOK: 6,  UPPERCUT: 6,  BLOCK: 0,  DODGE: 0 },
+  DODGE:    { JAB: 0,  HOOK: 10, UPPERCUT: 10, BLOCK: 0,  DODGE: 0 },
 };
 
 export const EXCHANGE_DURATION = { STANDOFF: 0.8, NORMAL: 1.0, HEAVY: 1.2 };
-const HEAVY_DAMAGE = 18;
+const HEAVY_DAMAGE = 30;
 const CRIT_CHANCE = 0.1;
 const CRIT_MULTIPLIER = 1.5;
 

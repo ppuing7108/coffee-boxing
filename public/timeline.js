@@ -1,6 +1,6 @@
 // 경기 대본 재생 계산 — DOM 없음 (node 테스트 가능)
 export const IMPACT_RATIO = 0.35; // exchange 시작 후 dur × 0.35 지점에 타격
-export const HEAVY_DAMAGE = 18;
+export const HEAVY_DAMAGE = 30; // server/fight.js와 같은 값
 
 // elapsed(초) 시점에 시작된 마지막 exchange 인덱스. 시작 전이면 -1.
 export function exchangeIndexAt(script, elapsed) {

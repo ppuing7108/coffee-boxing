@@ -1,0 +1,119 @@
+{
+  "mode": "built-in image_gen",
+  "finishing": "scripts/build-assets.mjs",
+  "records": [
+    {
+      "files": [
+        "atlasA.png"
+      ],
+      "prompt": "Use case: stylized-concept. Production game sprite atlas PNG with genuine transparent background, exact canvas 2560x2560. 10 columns and 10 rows, each cell 256x256, invisible grid, NO labels NO separators NO text. One consistent comic cartoon boxer: fighter-a, bald muscular tan man, thick dark outlines, bright cel colors, red trunks #D32F2F and red gloves #B71C1C, cream shoes. Faces RIGHT in every cell. Standing head y=40 and feet centered (128,240) in EACH cell. All drawings contained inside each cell. Each row is one animation; unused cells completely transparent. Row 1 idle 6 frames subtle bounce loop. Row 2 jab 4 frames, contact at frame index 2 arm outstretched to x245, last returns guard. Row 3 hook 6 frames, contact index3, last guard. Row4 uppercut 7 frames, contact index4, last guard. Row5 block 4 frames raises both gloves covering face, last holds. Row6 dodge 5 frames leaning back and returns guard. Row7 hit 3 frames face recoil. Row8 hit_heavy 5 frames dramatic torso recoil. Row9 KO 10 frames staggers then falls backwards to left and ends lying horizontally on ground y240. Row10 victory 6 frames raising gloves cheering loop. Consistent identity and scale, clearly different poses, no duplicated static rows. Use flat solid red clothing colors for exact palette replacement later. All other objects absolutely avoid red."
+    },
+    {
+      "files": [
+        "atlasB.png"
+      ],
+      "prompt": "Use case: stylized-concept. Production boxing game sprite source atlas, transparent background. EXACT 10 rows x 10 columns invisible equal cells, square canvas. Consistent thick black outlines, bright flat cel-shaded 2D cartoon. Each boxer faces RIGHT, fully contained in cell with ample padding, feet centered bottom. Red trunks #D32F2F red gloves #B71C1C; no red elsewhere. Each row separately: ROW1 idle 6 poses; ROW2 jab 4 poses contact third; ROW3 hook 6 poses contact fourth; ROW4 uppercut 7 poses contact fifth; ROW5 block 4 poses final face covered; ROW6 dodge 5 poses final guard; ROW7 light hit 3 poses; ROW8 HEAVY HIT 5 poses torso leaning far backwards; ROW9 KO 10 poses ends lying horizontal; ROW10 victory 6 poses gloves raised. Unused cells EMPTY. No text labels grid watermarks. fighter-b: slim athletic deep brown skinned boxer, long black ponytail, cream boots."
+    },
+    {
+      "files": [
+        "atlasC.png"
+      ],
+      "prompt": "Use case: stylized-concept. Production boxing game sprite source atlas, transparent background. EXACT 10 rows x 10 columns invisible equal cells, square canvas. Consistent thick black outlines, bright flat cel-shaded 2D cartoon. Each boxer faces RIGHT, fully contained in cell with ample padding, feet centered bottom. Red trunks #D32F2F red gloves #B71C1C; no red elsewhere. Each row separately: ROW1 idle 6 poses; ROW2 jab 4 poses contact third; ROW3 hook 6 poses contact fourth; ROW4 uppercut 7 poses contact fifth; ROW5 block 4 poses final face covered; ROW6 dodge 5 poses final guard; ROW7 light hit 3 poses; ROW8 HEAVY HIT 5 poses torso leaning far backwards; ROW9 KO 10 poses ends lying horizontal; ROW10 victory 6 poses gloves raised. Unused cells EMPTY. No text labels grid watermarks. fighter-c: stocky chubby middle-aged light skinned boxer, short brown hair, round funny face, cream boots."
+    },
+    {
+      "files": [
+        "atlasD.png"
+      ],
+      "prompt": "Use case: stylized-concept. Production boxing game sprite source atlas, transparent background. EXACT 10 rows x 10 columns invisible equal cells, square canvas. Consistent thick black outlines, bright flat cel-shaded 2D cartoon. Each boxer faces RIGHT, fully contained in cell with ample padding, feet centered bottom. Red trunks #D32F2F red gloves #B71C1C; no red elsewhere. Each row separately: ROW1 idle 6 poses; ROW2 jab 4 poses contact third; ROW3 hook 6 poses contact fourth; ROW4 uppercut 7 poses contact fifth; ROW5 block 4 poses final face covered; ROW6 dodge 5 poses final guard; ROW7 light hit 3 poses; ROW8 HEAVY HIT 5 poses torso leaning far backwards; ROW9 KO 10 poses ends lying horizontal; ROW10 victory 6 poses gloves raised. Unused cells EMPTY. No text labels grid watermarks. fighter-d: lean weathered veteran medium olive skin, slick silver hair and bold dark moustache, cream boots."
+    },
+    {
+      "files": [
+        "ring.png"
+      ],
+      "prompt": "Use case: stylized-concept. Boxing game arena background 1280x720, thick dark outlines colorful cel cartoon matching comic boxers. No people in ring. Side view, red corner post far left blue far right, ropes behind fighters, wide unobstructed lavender canvas floor with foot placement line y600, dark blurred humorous crowd silhouettes upper half, overhead spotlights, no text no logos. Floor extends to bottom. Flat graphic style."
+    },
+    {
+      "files": [
+        "ui.png"
+      ],
+      "prompt": "Use case: stylized-concept. Transparent production game UI atlas, square 1536x1536 divided into 3 equal rows 2 equal columns with ample transparent gutters. TOP LEFT large gold cracked lettering exact 'K.O.!', TOP RIGHT fiery orange exact 'FIGHT!'. MIDDLE LEFT steaming ceramic coffee mug with a mischievous smug face, white cream brown coffee gold highlights. MIDDLE RIGHT empty transparent. BOTTOM LEFT red boxing corner button plate horizontal 8:3 decorated boxing rope and glove motifs, NO TEXT. BOTTOM RIGHT same blue plate NO TEXT. Thick dark outlines bright comic cartoon shading, no background, each object isolated, no labels grid or watermarks."
+    },
+    {
+      "files": [
+        "effects.png"
+      ],
+      "prompt": "Use case: stylized-concept. Transparent sprite atlas square 1536x1536, EXACT FOUR equal-height rows and SIX equal-width columns invisible grid, each cell fully separate and padded. Row1 five frames yellow white impact starburst growing then shrinking, sixth empty. Row2 six frames big red orange white critical explosive starburst grows then fades. Row3 four frames blue guard shield shards burst then fade, last two empty. Row4 four frames pale blue white curved wind swoosh swipes then fades last two empty. Consistent bold comic cartoon thick outline. Each effect centered in its cell, no figures, no text, no lines or grid."
+    },
+    {
+      "files": [
+        "portraits-legacy.png"
+      ],
+      "prompt": "Use case: stylized-concept. Four boxing game portraits in one transparent square atlas EXACT 2x2 equally sized cells. Top left muscular bald tan man. Top right slim deep brown skinned man with long black ponytail. Bottom left chubby light skinned middle-aged man short brown hair. Bottom right lean olive skinned silver slick hair veteran with thick dark moustache. Each waist-up three-quarter frontal looking slightly right, raised boxing gloves red #B71C1C, trunks red #D32F2F. Thick dark outline bright flat comic cartoon cel shading, matches arcade boxing sprites. No red elsewhere, no frames, no text, all fully contained cells, transparent background."
+    },
+    {
+      "files": [
+        "coffeeClean.png"
+      ],
+      "prompt": "Use case: stylized-concept. One complete steaming coffee mug illustration on genuinely transparent background, square composition. Thick black outlines colorful comic cartoon cel shading, cream ceramic gold accents brown coffee, smug mischievous smiling face, three curls of steam. Full object including steam entirely inside image with wide clear padding on all four sides, no cropping, no other objects, no words, no lettering, no border."
+    },
+    {
+      "files": [
+        "koClean.png"
+      ],
+      "prompt": "Use case: stylized-concept. ONE standalone boxing arcade game text graphic, exact text 'K.O.!' in cracked gold chunky comic lettering with thick dark outlines, small orange comic explosion behind. Genuinely transparent background. Wide horizontal 3:1 composition, entire lettering and explosion fully inside image with 10 percent empty transparent padding on ALL sides. No other text, no mug, no objects, no watermark. Bright cartoon flat cel shading."
+    },
+    {
+      "files": [
+        "heavyA.png"
+      ],
+      "prompt": "Use case: stylized-concept. Production sprite strip: muscular bald tan-skinned male boxer with red trunks and red boxing gloves, cream boots. Thick dark outlines bright flat 2D cartoon cel shading. EXACT FIVE isolated full-body poses side by side one horizontal row equal invisible cells, transparent background, no text. All face RIGHT, same scale. Heavy hit reaction: first guarded stance, second head and shoulders snap backwards LEFT, third entire torso leans dramatically backwards LEFT with arms flung, fourth stagger LEFT, fifth recovering guard. Feet stay planted centered within each cell. Each pose padded no overlaps or clipping. No extra figures. This is hit_heavy animation not an attack."
+    },
+    {
+      "files": [
+        "jabC.png"
+      ],
+      "prompt": "Use case: stylized-concept. Asset: boxing game jab sprite animation. Exactly FOUR full-body drawings side by side, transparent background, equally spaced, invisible 4 cells. Each figure MUST stay fully inside own cell with 15% padding, never overlap or touch adjacent figure. Same short stocky CHUBBY middle-aged light skinned man, short curly brown hair, large round belly and funny determined round face, bright red boxing gloves and trunks with cream waistband, cream boots. Looks RIGHT. Bold black outlines, colorful 2D comic cartoon, flat shading. Four sequential jab poses: 1 guard, 2 short windup, 3 fully extended front hand straight to right with BOTH feet visible and body complete, 4 guard. No speed lines no impact sparks no stars no floor no text. Keep head size and feet baseline same across all four frames. Wide canvas."
+    },
+    {
+      "files": [
+        "portrait-b-female.png"
+      ],
+      "purpose": "Replace fighter-b male portrait to match the female animation character.",
+      "references": [
+        "public/assets/fighters/fighter-b/red/portrait.png (previous male portrait)",
+        "public/assets/fighters/fighter-b/red/idle.png (authoritative character reference)"
+      ],
+      "prompt": "Use case: identity-preserve. Asset type: transparent boxing game character portrait, waist-up three-quarter front view facing slightly right. Image 1 is the existing portrait to replace; Image 2 is the authoritative animation identity reference. Replace the portrait's male boxer with the SAME ADULT WOMAN shown in Image 2: slim athletic female boxer, deep warm brown skin, long flowing black high ponytail, feminine face and eyebrows matching the sprite, determined playful expression. She wears a red athletic boxing sports top (as in animation), red boxing trunks #D32F2F and raised red boxing gloves #B71C1C. Match Image 2's cartoon facial proportions, dark bold outline and colorful simple cel shading; do not retain the male square jaw, exposed male chest or bodybuilding physique of Image 1. Preserve the waist-up framing, both gloved hands fully visible, rightward gaze, genuinely transparent background and generous empty margin so ponytail and gloves are not clipped. One character only, no words, no frame, no background."
+    },
+    {
+      "files": [
+        "fighter-c-poses-v2.png"
+      ],
+      "prompt": "Use case: identity-preserve. Production sprite pose atlas for existing boxing game. The input is the EXACT fighter idle frame, authoritative model sheet. Preserve this precise character, facial anatomy, head width, chunky/cartoon line style, body mass and all proportions. Create ONE square TRANSPARENT atlas EXACTLY 4 COLUMNS x 4 ROWS of 16 cells, invisible equal grid. EACH cell same canvas and camera scale, full character entirely inside its cell; foot midpoint at 50% cell width, 94% cell height. Standing height 78% cell height, identical to reference. DO NOT zoom out on punches, DO NOT resize individual poses, DO NOT change body build or perspective. Front-right 3/4 view in ALL poses, including hook: chest and face visible, NEVER show back. Red shorts and red boxing gloves, cream shoes, black outline. NO sparks, impact flashes, stars, motion lines, arcs, trails, lettering, ground or shadows: draw ONLY the boxer with alpha background. Shift or bend arms within the cell if necessary instead of shrinking the fighter. Preserve the belly/torso volume even when the arm is extended. 16 cells read left to right, top to bottom, poses: 0 exact reference guard; 1 jab windup; 2 short forward straight jab contact, full face and torso facing right; 3 hook windup arm to side with chest visible; 4 hook contact bent arm sweeping in front of chest, face and chest still visible; 5 uppercut windup crouch; 6 uppercut contact bent arm upward; 7 block both gloves in front of face; 8 dodge slight lean backwards feet planted; 9 light hit head recoil; 10 heavy hit torso leans backward but same body volume; 11 losing balance falling backward feet still near original anchor; 12 side-lying KO fully horizontal body on floor; 13 KO fully horizontal settled, both legs in view; 14 victory both gloves raised, same face head width and torso size; 15 victory raised fists slight variation. Draw the same fixed-size character EVERY time. Body silhouette opaque-pixel area in each cell must be within 88%-115% of input guard (80%-125% for falling/KO). Make a production game asset, not a diagram or labelled model sheet. CHARACTER LOCK: short chubby middle-aged pale-skinned man, very large round protruding belly, short brown hair, round comic face. NEVER make him slim, muscular, taller or thinner; the large round belly is the defining feature."
+    },
+    {
+      "files": [
+        "fighter-d-poses-v2.png"
+      ],
+      "prompt": "Use case: identity-preserve. Production sprite pose atlas for existing boxing game. The input is the EXACT fighter idle frame, authoritative model sheet. Preserve this precise character, facial anatomy, head width, chunky/cartoon line style, body mass and all proportions. Create ONE square TRANSPARENT atlas EXACTLY 4 COLUMNS x 4 ROWS of 16 cells, invisible equal grid. EACH cell same canvas and camera scale, full character entirely inside its cell; foot midpoint at 50% cell width, 94% cell height. Standing height 78% cell height, identical to reference. DO NOT zoom out on punches, DO NOT resize individual poses, DO NOT change body build or perspective. Front-right 3/4 view in ALL poses, including hook: chest and face visible, NEVER show back. Red shorts and red boxing gloves, cream shoes, black outline. NO sparks, impact flashes, stars, motion lines, arcs, trails, lettering, ground or shadows: draw ONLY the boxer with alpha background. Shift or bend arms within the cell if necessary instead of shrinking the fighter. Preserve the belly/torso volume even when the arm is extended. 16 cells read left to right, top to bottom, poses: 0 exact reference guard; 1 jab windup; 2 short forward straight jab contact, full face and torso facing right; 3 hook windup arm to side with chest visible; 4 hook contact bent arm sweeping in front of chest, face and chest still visible; 5 uppercut windup crouch; 6 uppercut contact bent arm upward; 7 block both gloves in front of face; 8 dodge slight lean backwards feet planted; 9 light hit head recoil; 10 heavy hit torso leans backward but same body volume; 11 losing balance falling backward feet still near original anchor; 12 side-lying KO fully horizontal body on floor; 13 KO fully horizontal settled, both legs in view; 14 victory both gloves raised, same face head width and torso size; 15 victory raised fists slight variation. Draw the same fixed-size character EVERY time. Body silhouette opaque-pixel area in each cell must be within 88%-115% of input guard (80%-125% for falling/KO). Make a production game asset, not a diagram or labelled model sheet. CHARACTER LOCK: slim wiry olive tan veteran, dark thick moustache, silver shoulder-length hair tied back, lean narrow torso. NEVER make him broad, bulky or muscular beyond this exact reference."
+    },
+    {
+      "files": [
+        "fighter-c-ko-v2.png"
+      ],
+      "prompt": "Use case: identity-preserve. Production boxing sprite pose correction. Input image is the authoritative idle boxer; preserve EXACT character, head dimensions, belly/torso volume, body proportions and drawing style. Create a transparent SQUARE 2x2 atlas with equal invisible cells, generous transparent gutters. TOP LEFT reproduce the standing guard reference at the same scale as the other poses, full height 78% of cell. TOP RIGHT same boxer lying on their BACK, head on LEFT and both feet on RIGHT, legs slightly separated and both boxing gloves visible near torso. BOTTOM LEFT same back-lying KO pose with face eyes closed and slight limb variation. BOTTOM RIGHT same back-lying settled KO. Crucial: NO shrinkage in the lying poses. Head must have SAME pixel width and height as standing guard, torso must have SAME thickness and volume: mentally rotate the reference body rather than invent a smaller prone version. Keep both arms and both legs visibly separate so the opaque silhouette area of lying poses is between 90% and 110% of standing guard; do not collapse limbs into one thin side silhouette. A lying body is as LONG as the reference is TALL (78% cell) and retains its broad chest/belly; it is not a thin small object. Same front-right 3/4 view of chest and face as reference, even while horizontal. Red boxing gloves and shorts, cream boots. Draw boxer only, no shadows, ground, stars, flashes, speed lines or effects. No labels, words, cell borders, grid or watermarks. Keep the very BIG ROUND FAT BELLY, thick waist, short thick legs and chubby round face. Never slender."
+    },
+    {
+      "files": [
+        "fighter-d-ko-v2.png"
+      ],
+      "prompt": "Use case: identity-preserve. Production boxing sprite pose correction. Input image is the authoritative idle boxer; preserve EXACT character, head dimensions, belly/torso volume, body proportions and drawing style. Create a transparent SQUARE 2x2 atlas with equal invisible cells, generous transparent gutters. TOP LEFT reproduce the standing guard reference at the same scale as the other poses, full height 78% of cell. TOP RIGHT same boxer lying on their BACK, head on LEFT and both feet on RIGHT, legs slightly separated and both boxing gloves visible near torso. BOTTOM LEFT same back-lying KO pose with face eyes closed and slight limb variation. BOTTOM RIGHT same back-lying settled KO. Crucial: NO shrinkage in the lying poses. Head must have SAME pixel width and height as standing guard, torso must have SAME thickness and volume: mentally rotate the reference body rather than invent a smaller prone version. Keep both arms and both legs visibly separate so the opaque silhouette area of lying poses is between 90% and 110% of standing guard; do not collapse limbs into one thin side silhouette. A lying body is as LONG as the reference is TALL (78% cell) and retains its broad chest/belly; it is not a thin small object. Same front-right 3/4 view of chest and face as reference, even while horizontal. Red boxing gloves and shorts, cream boots. Draw boxer only, no shadows, ground, stars, flashes, speed lines or effects. No labels, words, cell borders, grid or watermarks. Keep the same slim muscular veteran, thick moustache and silver hair; never bulkier or skinnier than reference."
+    },
+    {
+      "files": [
+        "fighter-b-ko-v2.png"
+      ],
+      "prompt": "Use case: identity-preserve. Input is exact fighter-b female boxer idle model sheet. Preserve identical slim athletic woman, deep brown skin, face, long black ponytail, red sports bra and shorts, red gloves, cream boots. Create transparent square atlas EXACT 2x2 invisible equal cells. Top left exact standing guard reference. Top right boxer lying on BACK, head left feet right, chest and face visible, eyes closed, both arms/gloves and both legs visibly separate, NO foreshortening. Bottom left same back-lying KO, slight arm variation. Bottom right same settled back-lying KO. All FOUR figures at EXACT SAME SCALE, head size and torso volume equal to standing model. Horizontal body length equals standing height (78% of cell), not longer or shorter. No shrinking KO poses! Each lying silhouette must retain 90%-110% of standing guard opaque area; don't merge legs/arms into a skinny silhouette. Genuinely transparent, no floor or shadows, no stars, flashes, impact effects, words or borders. Same thick dark outlined bright flat comic cartoon style, all figures fully inside cells, ample transparent margin."
+    }
+  ]
+}

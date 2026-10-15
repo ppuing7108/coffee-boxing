@@ -69,7 +69,7 @@ button.bet.blue { background: #1976d2; }
   transform-origin: 128px 240px;
   transform: scale(calc(var(--fighter-scale, 1) * var(--flip, 1)), var(--fighter-scale, 1)); }
 .sprite { background-repeat: no-repeat; }
-.sprite canvas { display: block; }
+.sprite canvas { display: block; image-rendering: pixelated; }
 .sprite.placeholder { border: 4px dashed #fff; }
 .sprite.placeholder.corner-red { background: rgba(211, 47, 47, 0.6); }
 .sprite.placeholder.corner-blue { background: rgba(25, 118, 210, 0.6); }

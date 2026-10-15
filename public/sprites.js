@@ -1,6 +1,7 @@
 // 스프라이트 시트 재생. 리소스가 없으면 같은 크기의 임시 박스(동작 이름 표시)로 대체한다.
 const DEFAULT_MANIFEST = {
   frameSize: 256,
+  displayFrameSize: 256,
   fps: 12,
   actions: {
     idle: { frames: 6, loop: true },
@@ -72,17 +73,18 @@ export class Sprite {
     this.timer = null;
     this.token = 0;
     const size = manifest.frameSize;
+    const displaySize = manifest.displayFrameSize || size;
     el.classList.add('sprite', `corner-${corner}`);
-    el.style.width = el.style.height = `${size}px`;
+    el.style.width = el.style.height = `${displaySize}px`;
     el.style.setProperty('--flip', corner === 'blue' ? -1 : 1); // 청코너는 좌우 반전 (크기는 CSS .fighter)
     // 화면에서 확대해 보여주므로 캔버스 내부 해상도를 높여 고품질 보간으로 그린다
     this.canvas = document.createElement('canvas');
-    this.canvas.width = this.canvas.height = size * CANVAS_RES;
-    this.canvas.style.width = this.canvas.style.height = `${size}px`;
+    this.canvas.width = this.canvas.height = Math.max(size,displaySize*CANVAS_RES);
+    this.canvas.style.width = this.canvas.style.height = `${displaySize}px`;
     el.replaceChildren(this.canvas);
     this.ctx = this.canvas.getContext('2d');
-    this.ctx.imageSmoothingQuality = 'high';
-    this.ctx.scale(CANVAS_RES, CANVAS_RES);
+    this.ctx.imageSmoothingEnabled = false; // 도트 경계를 보존한다.
+    this.ctx.scale(this.canvas.width/displaySize, this.canvas.height/displaySize);
   }
 
   async play(action) {
@@ -95,7 +97,7 @@ export class Sprite {
     this.el.classList.toggle('placeholder', !img);
     this.el.dataset.action = action;
     let frame = 0;
-    const draw = () => drawFrame(this.ctx, img, frame, manifest.frameSize, `${action} ${frame + 1}/${spec.frames}`);
+    const draw = () => drawFrame(this.ctx, img, frame, manifest.frameSize, `${action} ${frame + 1}/${spec.frames}`, manifest.displayFrameSize || manifest.frameSize);
     draw();
     this.timer = setInterval(() => {
       frame += 1;
@@ -118,16 +120,16 @@ export class Sprite {
 }
 
 // 시트의 frame번째 칸을 그린다. 이미지가 없으면 임시 박스 글자.
-function drawFrame(ctx, img, frame, size, label) {
-  ctx.clearRect(0, 0, size, size);
+function drawFrame(ctx, img, frame, size, label, displaySize=size) {
+  ctx.clearRect(0, 0, displaySize, displaySize);
   if (img) {
-    ctx.drawImage(img, frame * size, 0, size, size, 0, 0, size, size);
+    ctx.drawImage(img, frame * size, 0, size, size, 0, 0, displaySize, displaySize);
     return;
   }
   ctx.fillStyle = '#fff';
   ctx.font = 'bold 22px system-ui';
   ctx.textAlign = 'center';
-  ctx.fillText(label, size / 2, size / 2);
+  ctx.fillText(label, displaySize / 2, displaySize / 2);
 }
 
 const EFFECT_FALLBACK = { block_spark: '🛡️', whoosh: '💨' };

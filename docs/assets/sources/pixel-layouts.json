@@ -1,0 +1,24 @@
+{
+  "fighter-a": {
+    "file": "fighter-a-pixel.png",
+    "guardHeight": 96,
+    "poseMap": {
+      "2": 1
+    }
+  },
+  "fighter-b": {
+    "file": "fighter-b-pixel.png",
+    "guardHeight": 96
+  },
+  "fighter-c": {
+    "file": "fighter-c-pixel.png",
+    "guardHeight": 96
+  },
+  "fighter-d": {
+    "file": "fighter-d-pixel.png",
+    "guardHeight": 96,
+    "poseMap": {
+      "2": 1
+    }
+  }
+}

@@ -1,0 +1,87 @@
+{
+  "artStyle": "pixel-art",
+  "pixelSize": 4,
+  "maxColors": 26,
+  "frameSize": 512,
+  "displayFrameSize": 256,
+  "anchor": {
+    "x": 256,
+    "y": 480
+  },
+  "fps": 12,
+  "skins": [
+    "fighter-a",
+    "fighter-b",
+    "fighter-c",
+    "fighter-d"
+  ],
+  "corners": [
+    "red",
+    "blue"
+  ],
+  "actions": {
+    "idle": {
+      "frames": 6,
+      "loop": true
+    },
+    "jab": {
+      "frames": 4,
+      "loop": false,
+      "impactFrame": 2
+    },
+    "hook": {
+      "frames": 6,
+      "loop": false,
+      "impactFrame": 3
+    },
+    "uppercut": {
+      "frames": 7,
+      "loop": false,
+      "impactFrame": 4
+    },
+    "block": {
+      "frames": 4,
+      "loop": false,
+      "hold": true
+    },
+    "dodge": {
+      "frames": 5,
+      "loop": false
+    },
+    "hit": {
+      "frames": 3,
+      "loop": false
+    },
+    "hit_heavy": {
+      "frames": 5,
+      "loop": false
+    },
+    "ko": {
+      "frames": 10,
+      "loop": false,
+      "hold": true
+    },
+    "victory": {
+      "frames": 6,
+      "loop": true
+    }
+  },
+  "effects": {
+    "hit_spark": {
+      "frames": 5,
+      "size": 128
+    },
+    "crit_spark": {
+      "frames": 6,
+      "size": 192
+    },
+    "block_spark": {
+      "frames": 4,
+      "size": 128
+    },
+    "whoosh": {
+      "frames": 4,
+      "size": 128
+    }
+  }
+}

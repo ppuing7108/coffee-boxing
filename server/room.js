@@ -25,6 +25,7 @@ export class Room {
     this.fight = null; // { startAt, endsAt, script, duration, ko }
     this.history = [];
     this.loser = null;
+    this.loserTotal = null; // 최종 패배자의 명예의 전당 통산 횟수 (기록 후 index.js가 채움)
   }
 
   getPlayer(id) {
@@ -106,6 +107,7 @@ export class Room {
     this.stage = 1;
     this.history = [];
     this.loser = null;
+    this.loserTotal = null;
     this.beginBetting(now);
     return { ok: true };
   }
@@ -180,6 +182,7 @@ export class Room {
     this.bets = emptyBets();
     this.history = [];
     this.loser = null;
+    this.loserTotal = null;
     return { ok: true };
   }
 
@@ -199,6 +202,7 @@ export class Room {
       fighters: this.fighters,
       history: this.history,
       loser: this.loser,
+      loserTotal: this.loserTotal,
     };
   }
 

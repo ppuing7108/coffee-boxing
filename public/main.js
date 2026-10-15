@@ -1,12 +1,15 @@
 import { socket, $, call, me, syncClock, loadSession, clearSession, showScreen } from './app.js';
 import { loadManifest } from './sprites.js';
 import { setupEntry, watchLobby } from './views/entry.js';
+import { setupHall, loadHall } from './views/hall.js';
 import { setupLobby, renderLobby } from './views/lobby.js';
 import { setupBetting, renderBetting, leaveBetting } from './views/betting.js';
 import { startFight, updateFightState, leaveFight } from './views/fight.js';
 import { setupFinished, renderFinished } from './views/finished.js';
 
 setupEntry();
+setupHall();
+loadHall();
 setupLobby();
 setupBetting();
 setupFinished();
@@ -15,10 +18,16 @@ showScreen('entry');
 
 let phase = null;
 
+// 입장 화면: 방 목록 구독 + 명예의 전당 새로 고침
+function enterLobbyScreen() {
+  watchLobby();
+  loadHall();
+}
+
 socket.on('connect', async () => {
   await syncClock();
   const session = loadSession();
-  if (!session) return watchLobby();
+  if (!session) return enterLobbyScreen();
   const res = await call('room:rejoin', session);
   if (res.ok) {
     me.playerId = res.playerId;
@@ -27,7 +36,7 @@ socket.on('connect', async () => {
   // 방이 사라졌으면(서버 재시작 등) 입장 화면으로
   clearSession();
   showScreen('entry');
-  watchLobby();
+  enterLobbyScreen();
 });
 
 socket.on('room:state', (state) => {

@@ -23,6 +23,17 @@
         <input id="join-code" maxlength="4" placeholder="방 코드" autocomplete="off">
         <button id="btn-join">입장</button>
       </details>
+
+      <section class="hall">
+        <h2>☕ 커피 명예의 전당</h2>
+        <div class="tabs">
+          <button id="hall-tab-all" class="tab active">전체</button>
+          <button id="hall-tab-month" class="tab">이번 달</button>
+        </div>
+        <ol id="hall-ranking" class="hall-ranking"></ol>
+        <h3>최근 기록</h3>
+        <ul id="hall-recent" class="hall-recent"></ul>
+      </section>
     </section>
 
     <section id="screen-lobby" class="screen">
@@ -74,6 +85,7 @@
     <section id="screen-finished" class="screen">
       <img src="assets/ui/coffee.png" class="coffee" alt="" onerror="this.replaceWith('☕')">
       <h2 id="loser"></h2>
+      <p id="loser-total" class="loser-total"></p>
       <ol id="history" class="history"></ol>
       <button id="btn-restart" hidden>다시하기</button>
       <button id="btn-leave">나가기</button>

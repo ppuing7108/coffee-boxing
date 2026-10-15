@@ -16,6 +16,19 @@ button:disabled { opacity: 0.35; cursor: not-allowed; }
 .room-list li.empty { justify-content: center; color: #888; }
 .room-list .code { font-weight: 900; letter-spacing: 3px; color: #f5c518; }
 details summary { cursor: pointer; color: #aaa; }
+.hall { max-width: 480px; margin: 32px auto 0; padding: 16px; background: #ffffff08; border-radius: 12px; }
+.hall h2 { margin: 0 0 12px; }
+.hall h3 { margin: 20px 0 8px; font-size: 16px; color: #aaa; }
+.tabs { display: flex; gap: 8px; justify-content: center; margin-bottom: 8px; }
+.tab { background: #333; color: #ccc; font-size: 15px; padding: 6px 14px; }
+.tab.active { background: #f5c518; color: #000; }
+.hall-ranking, .hall-recent { list-style: none; padding: 0; margin: 0; text-align: left; }
+.hall-ranking li, .hall-recent li { display: flex; justify-content: space-between; padding: 6px 8px; border-bottom: 1px solid #ffffff10; }
+.hall-ranking li.empty, .hall-recent li.empty { justify-content: center; color: #888; }
+.hall-ranking .rank { width: 3em; font-weight: 900; color: #f5c518; }
+.hall-ranking .name { flex: 1; }
+.hall-recent li { font-size: 14px; color: #ccc; }
+.loser-total { font-size: 22px; color: #f5c518; }
 .room-code { font-size: 64px; letter-spacing: 12px; font-weight: 900; color: #f5c518; }
 .players { list-style: none; padding: 0; }
 .players li { padding: 4px; }
@@ -87,5 +100,18 @@ button.bet.blue { background: #1976d2; }
 .room-list li.empty { justify-content: center; color: #888; }
 .room-list .code { font-weight: 900; letter-spacing: 3px; color: #f5c518; }
 details summary { cursor: pointer; color: #aaa; }
+.hall { max-width: 480px; margin: 32px auto 0; padding: 16px; background: #ffffff08; border-radius: 12px; }
+.hall h2 { margin: 0 0 12px; }
+.hall h3 { margin: 20px 0 8px; font-size: 16px; color: #aaa; }
+.tabs { display: flex; gap: 8px; justify-content: center; margin-bottom: 8px; }
+.tab { background: #333; color: #ccc; font-size: 15px; padding: 6px 14px; }
+.tab.active { background: #f5c518; color: #000; }
+.hall-ranking, .hall-recent { list-style: none; padding: 0; margin: 0; text-align: left; }
+.hall-ranking li, .hall-recent li { display: flex; justify-content: space-between; padding: 6px 8px; border-bottom: 1px solid #ffffff10; }
+.hall-ranking li.empty, .hall-recent li.empty { justify-content: center; color: #888; }
+.hall-ranking .rank { width: 3em; font-weight: 900; color: #f5c518; }
+.hall-ranking .name { flex: 1; }
+.hall-recent li { font-size: 14px; color: #ccc; }
+.loser-total { font-size: 22px; color: #f5c518; }
 .room-code { font-size: 48px; }
 }

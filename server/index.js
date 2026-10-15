@@ -3,13 +3,31 @@ import { createServer } from 'node:http';
 import { fileURLToPath } from 'node:url';
 import { Server } from 'socket.io';
 import { RoomManager } from './rooms.js';
+import { HallOfFame } from './hall-of-fame.js';
 
 const PUBLIC_DIR = fileURLToPath(new URL('../public', import.meta.url));
+const DEFAULT_HALL_FILE = process.env.HALL_OF_FAME_FILE
+  ?? fileURLToPath(new URL('../data/coffee-log.tsv', import.meta.url));
 const SWEEP_MS = 10000;
 
-export function createGameServer({ now = Date.now, rng = Math.random } = {}) {
+// timers: 테스트에서 즉시 실행으로 바꿔 끼울 수 있게 주입받는다
+export function createGameServer({
+  now = Date.now,
+  rng = Math.random,
+  hallOfFameFile = DEFAULT_HALL_FILE,
+  timers: { set: setTimer, clear: clearTimer_ } = { set: setTimeout, clear: clearTimeout },
+} = {}) {
   const app = express();
+  const hall = new HallOfFame(hallOfFameFile);
   app.use(express.static(PUBLIC_DIR));
+  app.get('/api/hall-of-fame', async (_req, res) => {
+    try {
+      res.json(await hall.summary());
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ error: 'HALL_OF_FAME_UNAVAILABLE' });
+    }
+  });
   const httpServer = createServer(app);
   const io = new Server(httpServer);
   const manager = new RoomManager(rng);
@@ -25,20 +43,34 @@ export function createGameServer({ now = Date.now, rng = Math.random } = {}) {
   };
 
   function clearTimer(code) {
-    clearTimeout(timers.get(code));
+    clearTimer_(timers.get(code));
     timers.delete(code);
+  }
+
+  // 최종 패배자를 명예의 전당에 한 줄 기록하고, 통산 횟수를 방 상태에 실어 보낸다
+  async function recordLoser(room) {
+    const loser = room.getPlayer(room.loser);
+    try {
+      room.loserTotal = await hall.record(loser.nickname, new Date(now()));
+    } catch (err) {
+      console.error('명예의 전당 기록 실패', err);
+      return;
+    }
+    broadcast(room);
+    io.to(LOBBY_WATCHERS).emit('hall:updated');
   }
 
   // phase에 맞는 타이머를 건다: BETTING → 마감, FIGHTING → 경기 종료
   function schedule(room) {
     clearTimer(room.code);
     if (room.phase === 'BETTING') {
-      timers.set(room.code, setTimeout(() => closeBetting(room), Math.max(0, room.deadline - now())));
+      timers.set(room.code, setTimer(() => closeBetting(room), Math.max(0, room.deadline - now())));
     } else if (room.phase === 'FIGHTING') {
-      timers.set(room.code, setTimeout(() => {
+      timers.set(room.code, setTimer(() => {
         room.finishFight(now());
         schedule(room);
         broadcast(room);
+        if (room.phase === 'FINISHED') recordLoser(room);
       }, Math.max(0, room.fight.endsAt - now())));
     }
   }

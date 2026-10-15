@@ -1,7 +1,10 @@
 // 봇 4명으로 게임 한 판을 끝까지 돌려 본다 (실제 타이머 사용, 약 1분). 사용: npm run bot-game
 import { io as connect } from 'socket.io-client';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
 import { createGameServer } from '../server/index.js';
-const server = createGameServer();
+// 봇 결과가 실제 명예의 전당에 남지 않게 임시 파일 사용
+const server = createGameServer({ hallOfFameFile: join(tmpdir(), `bot-game-${process.pid}.tsv`) });
 const port = await server.listen(0);
 const url = `http://localhost:${port}`;
 const call = (c, e, p) => new Promise((r) => c.emit(e, p, r));

@@ -13,6 +13,7 @@ export function setupFinished() {
 
 export function renderFinished(state) {
   $('loser').textContent = `☕ ${nicknameOf(state, state.loser)} 커피 사와라!`;
+  $('loser-total').textContent = state.loserTotal ? `명예의 전당 통산 ${state.loserTotal}잔째` : '';
   const ol = $('history');
   ol.innerHTML = '';
   for (const h of state.history) {

@@ -1,4 +1,4 @@
-import { $, me, serverNow, nicknameOf } from '../app.js';
+import { $, me, serverNow, nicknameOf, renderPlayers } from '../app.js';
 import { playFight } from '../fight-player.js';
 
 let stop = null;
@@ -6,6 +6,12 @@ let lastState = null;
 
 export function updateFightState(state) {
   lastState = state;
+  if (state.phase === 'FIGHTING') renderBettors(state);
+}
+
+// 코너별 베팅자 목록 (접속 상태가 바뀌면 room:state마다 다시 그림)
+function renderBettors(state) {
+  for (const side of ['red', 'blue']) renderPlayers($(`fight-bets-${side}`), state, state.bets[side]);
 }
 
 // 1280×720 링을 화면 폭에 맞춰 축소
@@ -18,6 +24,7 @@ export function startFight(payload) {
   stop?.();
   fitRing();
   $('stage-result').hidden = true;
+  if (lastState) renderBettors(lastState);
   const myBet = lastState && ['red', 'blue'].find((s) => lastState.bets[s].includes(me.playerId));
   $('my-bet').textContent = myBet ? `내 선택: ${myBet === 'red' ? '🔴 홍코너' : '🔵 청코너'} — 지는 쪽이 커피에 가까워져요` : '관전 중';
   stop = playFight(payload, serverNow, {

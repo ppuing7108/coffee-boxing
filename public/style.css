@@ -28,8 +28,18 @@ button.bet.blue { background: #1976d2; }
 .hud { display: flex; gap: 24px; }
 .hud-side { flex: 1; text-align: left; }
 .hud-side.blue { text-align: right; }
+.bettors { list-style: none; padding: 0; margin: 6px 0 0; display: flex; flex-wrap: wrap; gap: 4px 10px; font-size: 15px; }
+.hud-side.blue .bettors { justify-content: flex-end; }
+.bettors li { padding: 2px 8px; border-radius: 10px; background: #fff1; }
+.bettors li.offline { opacity: 0.4; }
+.bettors li.me { font-weight: bold; color: #f5c518; }
 .hpbar { height: 20px; background: #333; border-radius: 10px; overflow: hidden; }
-.hud-side.blue .hpbar { transform: scaleX(-1); }
+.hud-side.blue .bettors { list-style: none; padding: 0; margin: 6px 0 0; display: flex; flex-wrap: wrap; gap: 4px 10px; font-size: 15px; }
+.hud-side.blue .bettors { justify-content: flex-end; }
+.bettors li { padding: 2px 8px; border-radius: 10px; background: #fff1; }
+.bettors li.offline { opacity: 0.4; }
+.bettors li.me { font-weight: bold; color: #f5c518; }
+.hpbar { transform: scaleX(-1); }
 .hp { height: 100%; width: 100%; background: #4caf50; transition: width 0.25s; }
 .ring-wrap { position: relative; width: 100%; aspect-ratio: 16 / 9; overflow: hidden; margin-top: 8px; }
 .ring { position: absolute; left: 0; top: 0; width: 1280px; height: 720px; transform-origin: 0 0;

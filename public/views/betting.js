@@ -1,4 +1,5 @@
 import { $, call, me, toast, serverNow, renderPlayers } from '../app.js';
+import { preloadFighter, preloadEffects } from '../sprites.js';
 
 let timer = 0;
 
@@ -22,8 +23,10 @@ export function renderBetting(state) {
   const survivors = state.players.filter((p) => p.status === 'active').length;
 
   $('bet-title').textContent = `스테이지 ${state.stage} · 생존자 ${survivors}명`;
+  preloadEffects();
   for (const side of ['red', 'blue']) {
     const f = state.fighters[side];
+    preloadFighter(f.skin, side);
     $(`bet-name-${side}`).textContent = f.name;
     const img = $(`bet-portrait-${side}`);
     img.src = `assets/fighters/${f.skin}/${side}/portrait.png`;

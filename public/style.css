@@ -48,12 +48,11 @@ button.bet.blue { background: #1976d2; }
 .fighter.red { left: 342px; }
 .fighter.blue { left: 682px; }
 .sprite { background-repeat: no-repeat; }
-.sprite.placeholder { display: flex; align-items: center; justify-content: center; border: 4px dashed #fff;
-  font-size: 22px; font-weight: bold; color: #fff; }
+.sprite canvas { display: block; }
+.sprite.placeholder { border: 4px dashed #fff; }
 .sprite.placeholder.corner-red { background: rgba(211, 47, 47, 0.6); }
 .sprite.placeholder.corner-blue { background: rgba(25, 118, 210, 0.6); }
-.sprite.placeholder.corner-blue { direction: rtl; }
-.effect { position: absolute; background-repeat: no-repeat; font-size: 64px; display: flex; align-items: center; justify-content: center; pointer-events: none; }
+.effect { position: absolute; pointer-events: none; }
 .float-text { position: absolute; font-size: 40px; font-weight: 900; color: #ff5252; animation: float-up 0.9s forwards; }
 @keyframes float-up { to { transform: translateY(-60px); opacity: 0; } }
 .banner { position: absolute; left: 0; right: 0; top: 200px; font-size: 140px; font-weight: 900; color: #f5c518;

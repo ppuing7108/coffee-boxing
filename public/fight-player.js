@@ -1,4 +1,4 @@
-import { Sprite, spawnEffect, imageExists } from './sprites.js';
+import { Sprite, spawnEffect, imageExists, preloadFighter, preloadEffects } from './sprites.js';
 import { exchangeIndexAt, impactTime, hpAt, moveAction, hitAction, describe } from './timeline.js';
 
 const KO_MS = 3000;
@@ -8,6 +8,9 @@ const FEET = { red: { x: 470, y: 600 }, blue: { x: 810, y: 600 } };
 // payload: fight:script, serverNow: () => 서버 시각(ms), els: 화면 요소들, onResult: KO 연출 후 호출
 export function playFight(payload, serverNow, els, onResult) {
   const { script, fighters, startAt, duration, ko } = payload;
+  preloadFighter(fighters.red.skin, 'red');
+  preloadFighter(fighters.blue.skin, 'blue');
+  preloadEffects();
   const sprites = {
     red: new Sprite(els.red, { skin: fighters.red.skin, corner: 'red' }),
     blue: new Sprite(els.blue, { skin: fighters.blue.skin, corner: 'blue' }),

@@ -26,6 +26,21 @@ test('시원한 경기: 평균 9~13초 (데미지 1.7배)', () => {
   assert.ok(mean >= 9 && mean <= 13, `mean ${mean.toFixed(1)}s`);
 });
 
+test('크리티컬은 데미지가 들어간 타격의 약 20%', () => {
+  // 한쪽만 맞은 exchange만 센다 (맞불은 양쪽 판정이 crit 플래그 하나로 합쳐짐)
+  let hits = 0;
+  let crits = 0;
+  for (let seed = 1; seed <= 3000; seed++) {
+    for (const ex of simulate(seed).script) {
+      if (ex.result === 'TRADE' || (ex.dmg.red === 0 && ex.dmg.blue === 0)) continue;
+      hits++;
+      if (ex.crit) crits++;
+    }
+  }
+  const rate = crits / hits;
+  assert.ok(rate > 0.18 && rate < 0.22, `crit rate ${rate.toFixed(3)}`);
+});
+
 test('홍코너 승률 50% ±2% (공정성)', () => {
   let redWins = 0;
   const N = 10000;

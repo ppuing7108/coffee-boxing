@@ -17,7 +17,7 @@ export const BASE_DAMAGE = {
 
 export const EXCHANGE_DURATION = { STANDOFF: 0.8, NORMAL: 1.0, HEAVY: 1.2 };
 const HEAVY_DAMAGE = 30;
-const CRIT_CHANCE = 0.1;
+const CRIT_CHANCE = 0.2;
 const CRIT_MULTIPLIER = 1.5;
 
 export const SKINS = ['fighter-a', 'fighter-b', 'fighter-c', 'fighter-d'];

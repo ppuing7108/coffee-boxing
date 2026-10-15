@@ -10,7 +10,7 @@
 
 **Spec:** `docs/superpowers/specs/2026-10-15-boxing-betting-design.md`, 리소스 규격 `docs/superpowers/specs/2026-10-15-boxing-assets-spec.md`
 
-> 이 계획의 서버 코드와 테스트는 작성 시점에 임시 폴더에서 실제로 실행해 검증했다 (테스트 41개 통과, 봇 4명 전체 게임 완주).
+> 이 계획의 서버 코드와 테스트는 작성 시점에 임시 폴더에서 실제로 실행해 검증했다 (테스트 42개 통과, 봇 4명 전체 게임 완주).
 
 ## Global Constraints
 
@@ -18,7 +18,7 @@
 - 의존성: `express`, `socket.io` / dev: `socket.io-client` — 이외 추가 금지
 - 프론트엔드: 빌드 도구 없음, `public/`을 Express가 그대로 서빙
 - 포트: 기본 3000 (`PORT` 환경변수로 변경)
-- 베팅 제한시간 15초, 한쪽 상한 = 생존자 수 − 1, 베팅 변경 불가
+- 베팅 제한시간 15초, 한쪽 상한 = 올림(생존자 수 / 2) (5명 → 3:3 자리), 베팅 변경 불가
 - 경기 길이 7~30초, 대본 방송 후 1.5초 뒤 시작, KO 연출 3초 + 결과 표시 3초
 - 로비에서 끊긴 사람 60초 후 제거, 전원 끊긴 방 10분 후 삭제
 - 닉네임 1~12자 (앞뒤 공백 제거, 대소문자 무시 중복 금지)
@@ -27,7 +27,7 @@
 
 ## Review Focus
 
-- **동시 클릭**: 3명이 같은 순간 홍코너를 누르면 정확히 2명만 수락되고 1명은 `SIDE_FULL` → Task 5 `3명이 동시에 홍을 누르면 2명만 수락`
+- **동시 클릭**: 3명(상한 2)이 같은 순간 홍코너를 누르면 정확히 2명만 수락되고 1명은 `SIDE_FULL` → Task 5 `3명이 동시에 홍을 누르면 2명만 수락`
 - **경기 중 새로고침/재접속**: 같은 토큰으로 돌아오면 같은 대본을 다시 받고 중간부터 이어 본다 → Task 5 재접속 테스트, Task 6 `hpAt` 테스트
 - **베팅 중 방장 이탈**: 다음 입장자가 방장이 되어 "바로 진행"을 쓸 수 있다 → Task 5 방장 이탈 테스트
 - **닉네임 입력**: 공백만, 13자 이상, 대소문자만 다른 중복은 거절 → Task 4 `첫 입장자가 방장, 닉네임 검증`
@@ -405,7 +405,7 @@ git commit -m "feat: 전투 시뮬레이션과 7~30초 대본 생성"
 - Consumes: `createRng` (테스트에서만)
 - Produces (모두 순수 함수, 입력을 바꾸지 않음):
   - `emptyBets() => { red: [], blue: [] }`
-  - `sideCap(activeCount) => activeCount - 1`
+  - `sideCap(activeCount) => Math.ceil(activeCount / 2)`
   - `placeBet(bets, activeIds, playerId, side) => { ok: true, bets } | { ok: false, error: 'INVALID_SIDE'|'NOT_ACTIVE'|'ALREADY_BET'|'SIDE_FULL' }`
   - `allBet(bets, activeIds) => boolean`
   - `autoAssign(bets, activeIds, rng) => bets` — 미선택자를 자리 남은 쪽에 랜덤 배정
@@ -420,9 +420,18 @@ import { createRng } from '../server/rng.js';
 
 const ids = ['a', 'b', 'c'];
 
-test('상한은 생존자 수 - 1', () => {
+test('상한은 올림(생존자 수 / 2)', () => {
   assert.equal(sideCap(2), 1);
-  assert.equal(sideCap(5), 4);
+  assert.equal(sideCap(3), 2);
+  assert.equal(sideCap(4), 2);
+  assert.equal(sideCap(5), 3);
+});
+
+test('5명이면 한쪽에 3명까지, 4번째는 SIDE_FULL', () => {
+  const five = ['a', 'b', 'c', 'd', 'e'];
+  let bets = emptyBets();
+  for (const id of ['a', 'b', 'c']) bets = placeBet(bets, five, id, 'red').bets;
+  assert.equal(placeBet(bets, five, 'd', 'red').error, 'SIDE_FULL');
 });
 
 test('3명이 모두 홍을 누르면 앞의 2명만 수락', () => {
@@ -463,7 +472,7 @@ test('자동 배정 후 전원 배정, 양쪽 최소 1명, 기존 베팅 유지'
     const pre = seed % 2 ? { red: ['p0'], blue: [] } : emptyBets();
     const out = autoAssign(pre, players, rng);
     assert.ok(allBet(out, players));
-    assert.ok(out.red.length >= 1 && out.blue.length >= 1);
+    assert.ok(out.red.length >= Math.floor(n / 2) && out.blue.length >= Math.floor(n / 2));
     assert.equal(out.red.length + out.blue.length, n);
     if (seed % 2) assert.ok(out.red.includes('p0'));
   }
@@ -491,9 +500,9 @@ export function emptyBets() {
   return { red: [], blue: [] };
 }
 
-// 한쪽 최대 인원 = 생존자 수 - 1 (모두 한쪽 금지)
+// 한쪽 최대 인원 = 올림(생존자 수 / 2). 5명이면 3:3 자리 → 최소 3:2로 갈린다
 export function sideCap(activeCount) {
-  return activeCount - 1;
+  return Math.ceil(activeCount / 2);
 }
 
 export function hasBet(bets, playerId) {
@@ -529,7 +538,7 @@ export function autoAssign(bets, activeIds, rng) {
 - [ ] **Step 4: 통과 확인**
 
 Run: `node --test test/betting.test.js`
-Expected: PASS (7 tests)
+Expected: PASS (8 tests)
 
 - [ ] **Step 5: 커밋**
 
@@ -1296,7 +1305,7 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
 - [ ] **Step 6: 통과 확인**
 
 Run: `node --test`
-Expected: PASS (전체 37 tests), 프로세스가 멈추지 않고 종료
+Expected: PASS (전체 38 tests), 프로세스가 멈추지 않고 종료
 
 - [ ] **Step 7: 봇 스모크 스크립트** — `scripts/bot-game.js`
 
@@ -1460,7 +1469,7 @@ export function describe(ex) {
 - [ ] **Step 4: 통과 확인**
 
 Run: `node --test`
-Expected: PASS (전체 41 tests)
+Expected: PASS (전체 42 tests)
 
 - [ ] **Step 5: 커밋**
 
@@ -2257,7 +2266,7 @@ socket.on('fight:script', (payload) => {
 - [ ] **Step 10: 문법 확인과 전체 테스트**
 
 Run: `for f in public/*.js public/views/*.js; do node --check $f; done && node --test`
-Expected: `--check` 출력 없음, 테스트 41개 PASS
+Expected: `--check` 출력 없음, 테스트 42개 PASS
 
 - [ ] **Step 11: 수동 확인** — `npm start` 후 브라우저 창 3개(일반 1 + 시크릿 2, 또는 다른 브라우저)로 `http://localhost:3000`
 

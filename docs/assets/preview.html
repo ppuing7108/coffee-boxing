@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="ko">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>복싱 리소스 검수</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#111622;color:#edf1f9;font:15px/1.6 system-ui,sans-serif}main{max-width:1200px;margin:auto;padding:28px}h1{font-size:28px;margin:0}p{color:#b9c5db}header{position:sticky;top:0;background:#111622ed;padding:16px 0;z-index:2}label{margin-right:16px;display:inline-block}select,button{background:#26344b;color:white;border:1px solid #536681;padding:8px 12px;border-radius:6px}section{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:16px}.card{border:1px solid #35405a;border-radius:12px;overflow:hidden;background:#1a2233}.title{padding:10px 14px;display:flex;justify-content:space-between}.stage{width:256px;height:256px;margin:auto;position:relative;background:repeating-conic-gradient(#283449 0% 25%,#202c40 0% 50%) 0 0/32px 32px}.sprite{width:256px;height:256px;background-repeat:no-repeat}.pivot{display:none;position:absolute;left:122px;top:234px;width:12px;height:12px;border:1px solid #61ffcb;border-radius:50%;pointer-events:none}.pivot:before,.pivot:after{content:"";position:absolute;background:#61ffcb}.pivot:before{width:20px;height:1px;left:-5px;top:5px}.pivot:after{height:20px;width:1px;top:-5px;left:5px}.anchors .pivot{display:block}.impact{color:#ffd977}.portraits{display:flex;flex-wrap:wrap;gap:12px;margin:20px 0}.portraits img{width:130px;height:130px;object-fit:contain;background:#26344b;border-radius:10px}.ui{display:flex;flex-wrap:wrap;gap:20px;align-items:center;margin-top:24px}.ui img{max-width:350px;max-height:170px;object-fit:contain}.ring{width:100%;margin-top:24px;border-radius:12px}.fx{width:192px;height:192px;background-repeat:no-repeat;margin:auto}.error{color:#ff8e8e}small{color:#a8bbd8}a{color:#9bd3ff}
+</style>
+<main>
+<h1>복싱 리소스 검수</h1>
+<p>256 × 256 · 12 fps · 기준점 (128, 240). 단발 동작은 마지막 자세를 잠시 유지한 뒤 검수용으로 다시 재생합니다.</p>
+<header>
+<label>선수 <select id="skin"><option>fighter-a</option><option>fighter-b</option><option>fighter-c</option><option>fighter-d</option></select></label>
+<label>코너 <select id="corner"><option value="red">홍</option><option value="blue">청</option></select></label>
+<label><input id="flip" type="checkbox"> 좌우 반전</label>
+<label><input id="anchor" type="checkbox"> 기준점 표시</label>
+<button id="pause">일시정지</button>
+<button id="restart">처음부터</button>
+<label>프레임 <input id="scrub" type="range" min="0" max="9" value="0"></label>
+</header>
+<p id="status">이미지 확인 중…</p>
+<div class="portraits" id="portraits"></div>
+<section id="motions"></section>
+<h2>이펙트</h2><section id="effects"></section>
+<h2>UI / 링</h2><div class="ui" id="ui"></div><img class="ring" src="../../public/assets/ui/ring.png" alt="링 배경">
+<p><small>자동 검사: <code>node scripts/check-assets.js</code> · 원화 및 제작 기록: <a href="README.md">README.md</a></small></p>
+</main>
+<script>
+'use strict';
+const base='../../public/assets/';
+const actions={idle:{frames:6,loop:true},jab:{frames:4,impactFrame:2},hook:{frames:6,impactFrame:3},uppercut:{frames:7,impactFrame:4},block:{frames:4,hold:true},dodge:{frames:5},hit:{frames:3},hit_heavy:{frames:5},ko:{frames:10,hold:true},victory:{frames:6,loop:true}};
+const effects={hit_spark:{frames:5,size:128},crit_spark:{frames:6,size:192},block_spark:{frames:4,size:128},whoosh:{frames:4,size:128}};
+const $=id=>document.getElementById(id), items=[];
+let playing=true,start=performance.now(),frozen=0;
+for(const [name,spec]of Object.entries(actions)){
+  const card=document.createElement('div');card.className='card';
+  card.innerHTML=`<div class="title"><b>${name}</b><small></small></div><div class="stage"><div class="sprite"></div><span class="pivot"></span></div>`;
+  $('motions').append(card);items.push({name,...spec,size:256,el:card.querySelector('.sprite'),counter:card.querySelector('small'),fighter:true});
+}
+for(const [name,spec]of Object.entries(effects)){
+  const card=document.createElement('div');card.className='card';card.innerHTML=`<div class="title"><b>${name}</b><small></small></div><div class="fx" style="width:${spec.size}px;height:${spec.size}px"></div>`;
+  $('effects').append(card);items.push({name,...spec,el:card.querySelector('.fx'),counter:card.querySelector('small')});
+}
+for(const name of ['ko','fight','coffee','corner_red','corner_blue']){const img=new Image();img.src=base+`ui/${name}.png`;img.alt=name;$('ui').append(img);}
+async function reload(){
+  const loads=[];let failures=[];
+  for(const item of items){const path=item.fighter?`fighters/${$('skin').value}/${$('corner').value}/${item.name}.png`:`effects/${item.name}.png`;item.el.style.backgroundImage=`url("${base+path}")`;item.el.style.transform=item.fighter&&$('flip').checked?'scaleX(-1)':'';loads.push(new Promise(resolve=>{const img=new Image();img.onload=resolve;img.onerror=()=>{failures.push(path);resolve()};img.src=base+path;}));}
+  $('portraits').replaceChildren();for(const skin of ['fighter-a','fighter-b','fighter-c','fighter-d']){const img=new Image();img.src=base+`fighters/${skin}/${$('corner').value}/portrait.png`;img.alt=skin;$('portraits').append(img);}
+  await Promise.all(loads);$('status').textContent=failures.length?`로드 실패: ${failures.join(', ')}`:'동작 10개와 이펙트 4개 로드 완료 · 초록색 표시는 프레임 기준점입니다.';$('status').className=failures.length?'error':'';
+}
+for(const id of ['skin','corner','flip'])$(id).onchange=reload;
+$('anchor').onchange=()=>document.body.classList.toggle('anchors',$('anchor').checked);
+$('pause').onclick=()=>{if(playing)frozen=performance.now()-start;else start=performance.now()-frozen;playing=!playing;$('pause').textContent=playing?'일시정지':'재생';};
+$('restart').onclick=()=>{start=performance.now();frozen=0;$('scrub').value=0;};
+$('scrub').oninput=()=>{playing=false;frozen=Number($('scrub').value)*1000/12;$('pause').textContent='재생';};
+function tick(now){
+  const frame=Math.floor((playing?now-start:frozen)*12/1000);
+  for(const item of items){const period=item.frames+(item.loop?0:item.hold?12:6),current=playing?Math.min(frame%period,item.frames-1):Math.min(frame,item.frames-1);item.el.style.backgroundPosition=`${-current*item.size}px 0`;item.counter.textContent=`${current} / ${item.frames-1}`;item.counter.className=current===item.impactFrame?'impact':'';}
+  requestAnimationFrame(tick);
+}
+reload();requestAnimationFrame(tick);
+</script>
+</html>

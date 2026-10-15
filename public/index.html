@@ -1,1 +1,85 @@
 <!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>커피 복싱</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header><h1>🥊 커피 복싱 ☕</h1><div id="me"></div></header>
+
+  <main>
+    <section id="screen-entry" class="screen">
+      <input id="nickname" maxlength="12" placeholder="닉네임 (최대 12자)" autocomplete="off">
+      <div class="row">
+        <button id="btn-create">방 만들기</button>
+      </div>
+      <div class="row">
+        <input id="join-code" maxlength="4" placeholder="방 코드" autocomplete="off">
+        <button id="btn-join">입장</button>
+      </div>
+    </section>
+
+    <section id="screen-lobby" class="screen">
+      <p>방 코드</p>
+      <div id="room-code" class="room-code"></div>
+      <ul id="lobby-players" class="players"></ul>
+      <button id="btn-start" hidden>게임 시작</button>
+      <p id="lobby-hint" class="hint"></p>
+    </section>
+
+    <section id="screen-betting" class="screen">
+      <h2 id="bet-title"></h2>
+      <div id="bet-timer" class="timer"></div>
+      <div class="corners">
+        <div class="corner red">
+          <img id="bet-portrait-red" class="portrait" alt="">
+          <div id="bet-name-red" class="fighter-name"></div>
+          <button id="btn-bet-red" class="bet red">홍코너</button>
+          <ul id="bets-red" class="players"></ul>
+        </div>
+        <div class="corner blue">
+          <img id="bet-portrait-blue" class="portrait" alt="">
+          <div id="bet-name-blue" class="fighter-name"></div>
+          <button id="btn-bet-blue" class="bet blue">청코너</button>
+          <ul id="bets-blue" class="players"></ul>
+        </div>
+      </div>
+      <p id="bet-hint" class="hint"></p>
+      <button id="btn-close-now" hidden>바로 진행</button>
+    </section>
+
+    <section id="screen-fight" class="screen">
+      <div class="hud">
+        <div class="hud-side red"><span id="name-red"></span><div class="hpbar"><div id="hp-red" class="hp"></div></div></div>
+        <div class="hud-side blue"><span id="name-blue"></span><div class="hpbar"><div id="hp-blue" class="hp"></div></div></div>
+      </div>
+      <div id="ring-wrap" class="ring-wrap">
+        <div id="ring" class="ring">
+          <div id="sprite-red" class="fighter red"></div>
+          <div id="sprite-blue" class="fighter blue"></div>
+          <div id="banner" class="banner"></div>
+        </div>
+      </div>
+      <div id="caption" class="caption"></div>
+      <div id="my-bet" class="hint"></div>
+      <div id="stage-result" class="stage-result" hidden></div>
+    </section>
+
+    <section id="screen-finished" class="screen">
+      <img src="assets/ui/coffee.png" class="coffee" alt="" onerror="this.replaceWith('☕')">
+      <h2 id="loser"></h2>
+      <ol id="history" class="history"></ol>
+      <button id="btn-restart" hidden>다시하기</button>
+      <button id="btn-leave">나가기</button>
+    </section>
+  </main>
+
+  <div id="toast" class="toast"></div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script type="module" src="main.js"></script>
+</body>
+</html>

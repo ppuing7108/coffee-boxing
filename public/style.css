@@ -1,0 +1,67 @@
+* { box-sizing: border-box; }
+body { margin: 0; font-family: system-ui, sans-serif; background: #12121c; color: #f2f2f2; text-align: center; }
+header { display: flex; justify-content: space-between; align-items: center; padding: 8px 16px; background: #000; }
+header h1 { margin: 0; font-size: 24px; }
+main { max-width: 1280px; margin: 0 auto; padding: 16px; }
+.screen { display: none; }
+.screen.active { display: block; }
+.row { margin: 12px 0; }
+input, button { font-size: 18px; padding: 10px 14px; border-radius: 8px; border: none; margin: 4px; }
+button { background: #f5c518; color: #000; font-weight: bold; cursor: pointer; }
+button:disabled { opacity: 0.35; cursor: not-allowed; }
+.room-code { font-size: 64px; letter-spacing: 12px; font-weight: 900; color: #f5c518; }
+.players { list-style: none; padding: 0; }
+.players li { padding: 4px; }
+.players li.offline { opacity: 0.4; }
+.players li.me { font-weight: bold; color: #f5c518; }
+.hint { color: #aaa; min-height: 1.4em; }
+.timer { font-size: 48px; font-weight: 900; }
+.corners { display: flex; gap: 16px; justify-content: center; }
+.corner { flex: 1; max-width: 360px; padding: 12px; border-radius: 12px; }
+.corner.red { background: #4a1414; }
+.corner.blue { background: #142a4a; }
+.portrait { width: 160px; height: 160px; object-fit: contain; }
+.fighter-name { font-size: 20px; margin: 8px 0; }
+button.bet { width: 100%; font-size: 24px; color: #fff; }
+button.bet.red { background: #d32f2f; }
+button.bet.blue { background: #1976d2; }
+.hud { display: flex; gap: 24px; }
+.hud-side { flex: 1; text-align: left; }
+.hud-side.blue { text-align: right; }
+.hpbar { height: 20px; background: #333; border-radius: 10px; overflow: hidden; }
+.hud-side.blue .hpbar { transform: scaleX(-1); }
+.hp { height: 100%; width: 100%; background: #4caf50; transition: width 0.25s; }
+.ring-wrap { position: relative; width: 100%; aspect-ratio: 16 / 9; overflow: hidden; margin-top: 8px; }
+.ring { position: absolute; left: 0; top: 0; width: 1280px; height: 720px; transform-origin: 0 0;
+  background: url(assets/ui/ring.png) center / cover, radial-gradient(#3a3a5a, #111); }
+.fighter { position: absolute; top: 360px; } /* 발 기준점(128,240)이 바닥선 y=600에 오도록 */
+.fighter.red { left: 342px; }
+.fighter.blue { left: 682px; }
+.sprite { background-repeat: no-repeat; }
+.sprite.placeholder { display: flex; align-items: center; justify-content: center; border: 4px dashed #fff;
+  font-size: 22px; font-weight: bold; color: #fff; }
+.sprite.placeholder.corner-red { background: rgba(211, 47, 47, 0.6); }
+.sprite.placeholder.corner-blue { background: rgba(25, 118, 210, 0.6); }
+.sprite.placeholder.corner-blue { direction: rtl; }
+.effect { position: absolute; background-repeat: no-repeat; font-size: 64px; display: flex; align-items: center; justify-content: center; pointer-events: none; }
+.float-text { position: absolute; font-size: 40px; font-weight: 900; color: #ff5252; animation: float-up 0.9s forwards; }
+@keyframes float-up { to { transform: translateY(-60px); opacity: 0; } }
+.banner { position: absolute; left: 0; right: 0; top: 200px; font-size: 140px; font-weight: 900; color: #f5c518;
+  text-shadow: 0 0 20px #000; opacity: 0; transition: opacity 0.2s; pointer-events: none; }
+.banner.show { opacity: 1; }
+.banner img { max-width: 768px; }
+.caption { font-size: 28px; font-weight: bold; min-height: 1.5em; margin-top: 8px; }
+.ring-wrap.shake { animation: shake 0.25s; }
+@keyframes shake { 25% { transform: translate(-6px, 3px); } 75% { transform: translate(6px, -3px); } }
+.stage-result { font-size: 28px; padding: 12px; background: #000a; border-radius: 12px; }
+.coffee { width: 240px; font-size: 160px; }
+#loser { font-size: 48px; color: #ff5252; }
+.history { text-align: left; display: inline-block; }
+.toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); background: #000d; padding: 12px 20px;
+  border-radius: 8px; opacity: 0; transition: opacity 0.2s; pointer-events: none; }
+.toast.show { opacity: 1; }
+@media (max-width: 600px) {
+  .corners { flex-direction: column; align-items: center; }
+  .corner { width: 100%; }
+  .room-code { font-size: 48px; }
+}

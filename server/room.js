@@ -61,6 +61,8 @@ export class Room {
     if (!player) return { ok: false, error: 'INVALID_TOKEN' };
     player.connected = true;
     player.disconnectedAt = null;
+    // 넘길 사람이 없어 끊긴 방장에게 묶여 있었다면 지금 접속 중인 사람에게 넘긴다
+    if (!this.getPlayer(this.hostId)?.connected) this.transferHost();
     return { ok: true, player };
   }
 

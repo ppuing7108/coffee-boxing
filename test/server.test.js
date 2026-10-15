@@ -81,3 +81,22 @@ test('방장이 끊기면 다음 사람이 방장이 되어 바로 진행할 수
   assert.ok((await call(sockets[1], 'bet:closeNow')).ok);
   await scriptP;
 });
+
+test('잘못된 payload나 ack가 와도 서버가 죽지 않는다', async () => {
+  const c = client();
+  const res = await call(c, 'room:create', null);
+  assert.equal(res.error, 'INVALID_NICKNAME');
+  c.emit('bet:place', { side: 'red' }, 'not-a-function');
+  c.emit('room:join', 'garbage', 42);
+  const sync = await call(c, 'time:sync', null);
+  assert.ok(sync.serverNow > 0);
+});
+
+test('같은 소켓이 방을 두 번 만들면 이전 방에서는 끊김 처리된다', async () => {
+  const c = client();
+  const first = await call(c, 'room:create', { nickname: '중복' });
+  const second = await call(c, 'room:create', { nickname: '중복' });
+  assert.notEqual(first.code, second.code);
+  const old = server.manager.get(first.code);
+  assert.equal(old.getPlayer(first.playerId).connected, false);
+});

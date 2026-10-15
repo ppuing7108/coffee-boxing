@@ -174,3 +174,13 @@ test('toState에 token이 없다', () => {
   const { room } = roomWith(['a']);
   assert.ok(!JSON.stringify(room.toState()).includes(room.players[0].token));
 });
+
+test('방장이 혼자 끊긴 뒤 다른 사람이 돌아오면 그 사람이 방장', () => {
+  const { room, players: [a, b] } = roomWith(['a', 'b']);
+  room.start(a.id, 0);
+  room.disconnect(b.id, 0);
+  room.disconnect(a.id, 0);
+  assert.equal(room.hostId, a.id); // 넘길 사람이 없어 유지
+  room.reconnect(b.token);
+  assert.equal(room.hostId, b.id);
+});

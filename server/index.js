@@ -44,24 +44,51 @@ export function createGameServer({ now = Date.now, rng = Math.random } = {}) {
     io.to(room.code).emit('fight:script', room.fightPayload());
   }
 
+  // 소켓이 붙어 있던 방에서 빠진다. 같은 사람이 다른 소켓으로 남아 있으면 끊김 처리하지 않는다.
+  function release(socket) {
+    const room = manager.get(socket.data?.code);
+    if (!room) return;
+    const { playerId } = socket.data;
+    socket.leave(room.code);
+    socket.data = {};
+    const stillHere = [...(io.sockets.adapter.rooms.get(room.code) ?? [])]
+      .some((id) => io.sockets.sockets.get(id)?.data?.playerId === playerId);
+    if (stillHere) return;
+    room.disconnect(playerId, now());
+    broadcast(room);
+  }
+
   function enter(socket, room, player) {
+    if (socket.data?.playerId !== player.id) release(socket);
     socket.data = { code: room.code, playerId: player.id };
     socket.join(room.code);
     broadcast(room);
     if (room.phase === 'FIGHTING') socket.emit('fight:script', room.fightPayload());
   }
 
-  // 방에 들어간 소켓만 처리하는 핸들러를 만든다
-  const inRoom = (socket, handler) => (payload, ack = () => {}) => {
-    const room = manager.get(socket.data?.code);
-    if (!room) return ack({ ok: false, error: 'ROOM_NOT_FOUND' });
-    handler(room, socket.data.playerId, payload ?? {}, ack);
+  // 클라이언트가 보낸 값은 믿지 않는다: payload는 객체로, ack는 함수로 맞추고 예외가 서버를 죽이지 않게 한다
+  const safe = (handler) => (payload, ack) => {
+    const p = payload && typeof payload === 'object' ? payload : {};
+    const reply = typeof ack === 'function' ? ack : () => {};
+    try {
+      handler(p, reply);
+    } catch (err) {
+      console.error(err);
+      reply({ ok: false, error: 'SERVER_ERROR' });
+    }
   };
 
-  io.on('connection', (socket) => {
-    socket.on('time:sync', (_payload, ack = () => {}) => ack({ serverNow: now() }));
+  // 방에 들어간 소켓만 처리하는 핸들러를 만든다
+  const inRoom = (socket, handler) => safe((payload, ack) => {
+    const room = manager.get(socket.data?.code);
+    if (!room) return ack({ ok: false, error: 'ROOM_NOT_FOUND' });
+    handler(room, socket.data.playerId, payload, ack);
+  });
 
-    socket.on('room:create', ({ nickname } = {}, ack = () => {}) => {
+  io.on('connection', (socket) => {
+    socket.on('time:sync', safe((_payload, ack) => ack({ serverNow: now() })));
+
+    socket.on('room:create', safe(({ nickname }, ack) => {
       const room = manager.create();
       const result = room.addPlayer(nickname, now());
       if (!result.ok) {
@@ -70,25 +97,25 @@ export function createGameServer({ now = Date.now, rng = Math.random } = {}) {
       }
       ack({ ok: true, code: room.code, token: result.player.token, playerId: result.player.id });
       enter(socket, room, result.player);
-    });
+    }));
 
-    socket.on('room:join', ({ code, nickname } = {}, ack = () => {}) => {
+    socket.on('room:join', safe(({ code, nickname }, ack) => {
       const room = manager.get(code);
       if (!room) return ack({ ok: false, error: 'ROOM_NOT_FOUND' });
       const result = room.addPlayer(nickname, now());
       if (!result.ok) return ack(result);
       ack({ ok: true, code: room.code, token: result.player.token, playerId: result.player.id });
       enter(socket, room, result.player);
-    });
+    }));
 
-    socket.on('room:rejoin', ({ code, token } = {}, ack = () => {}) => {
+    socket.on('room:rejoin', safe(({ code, token }, ack) => {
       const room = manager.get(code);
       if (!room) return ack({ ok: false, error: 'ROOM_NOT_FOUND' });
       const result = room.reconnect(token);
       if (!result.ok) return ack(result);
       ack({ ok: true, code: room.code, token, playerId: result.player.id });
       enter(socket, room, result.player);
-    });
+    }));
 
     socket.on('game:start', inRoom(socket, (room, playerId, _p, ack) => {
       const result = room.start(playerId, now());
@@ -117,16 +144,7 @@ export function createGameServer({ now = Date.now, rng = Math.random } = {}) {
       if (result.ok) { schedule(room); broadcast(room); }
     }));
 
-    socket.on('disconnect', () => {
-      const room = manager.get(socket.data?.code);
-      if (!room) return;
-      // 같은 사람이 다른 탭으로 이미 다시 붙어 있으면 끊김 처리하지 않는다
-      const stillHere = [...(io.sockets.adapter.rooms.get(room.code) ?? [])]
-        .some((id) => io.sockets.sockets.get(id)?.data?.playerId === socket.data.playerId);
-      if (stillHere) return;
-      room.disconnect(socket.data.playerId, now());
-      broadcast(room);
-    });
+    socket.on('disconnect', () => release(socket));
   });
 
   const sweeper = setInterval(() => {

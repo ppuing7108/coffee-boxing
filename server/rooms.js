@@ -25,4 +25,16 @@ export class RoomManager {
   delete(code) {
     this.rooms.delete(code);
   }
+
+  // 지금 들어갈 수 있는 방: 로비 상태이고 접속 중인 사람이 있는 방, 최근에 만든 방부터
+  joinableRooms() {
+    return [...this.rooms.values()]
+      .filter((room) => room.phase === 'LOBBY' && room.players.some((p) => p.connected))
+      .reverse()
+      .map((room) => ({
+        code: room.code,
+        host: room.getPlayer(room.hostId)?.nickname ?? '',
+        players: room.players.length,
+      }));
+  }
 }

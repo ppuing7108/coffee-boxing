@@ -15,7 +15,14 @@ export function createGameServer({ now = Date.now, rng = Math.random } = {}) {
   const manager = new RoomManager(rng);
   const timers = new Map(); // code → 현재 phase의 타이머
 
-  const broadcast = (room) => io.to(room.code).emit('room:state', room.toState());
+  const LOBBY_WATCHERS = 'lobby-watchers'; // 입장 화면에서 방 목록을 보는 소켓들
+  const broadcastLobby = () => io.to(LOBBY_WATCHERS).emit('lobby:list', manager.joinableRooms());
+
+  // 방 상태가 바뀌면 그 방과 로비 목록을 함께 갱신한다
+  const broadcast = (room) => {
+    io.to(room.code).emit('room:state', room.toState());
+    broadcastLobby();
+  };
 
   function clearTimer(code) {
     clearTimeout(timers.get(code));
@@ -60,6 +67,7 @@ export function createGameServer({ now = Date.now, rng = Math.random } = {}) {
 
   function enter(socket, room, player) {
     if (socket.data?.playerId !== player.id) release(socket);
+    socket.leave(LOBBY_WATCHERS);
     socket.data = { code: room.code, playerId: player.id };
     socket.join(room.code);
     broadcast(room);
@@ -87,6 +95,11 @@ export function createGameServer({ now = Date.now, rng = Math.random } = {}) {
 
   io.on('connection', (socket) => {
     socket.on('time:sync', safe((_payload, ack) => ack({ serverNow: now() })));
+
+    socket.on('lobby:watch', safe((_payload, ack) => {
+      socket.join(LOBBY_WATCHERS);
+      ack({ ok: true, rooms: manager.joinableRooms() });
+    }));
 
     socket.on('room:create', safe(({ nickname }, ack) => {
       const room = manager.create();
@@ -152,6 +165,7 @@ export function createGameServer({ now = Date.now, rng = Math.random } = {}) {
       if (room.isAbandoned(now())) {
         clearTimer(room.code);
         manager.delete(room.code);
+        broadcastLobby();
         continue;
       }
       const before = room.players.length;

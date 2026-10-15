@@ -9,6 +9,13 @@ main { max-width: 1280px; margin: 0 auto; padding: 16px; }
 input, button { font-size: 18px; padding: 10px 14px; border-radius: 8px; border: none; margin: 4px; }
 button { background: #f5c518; color: #000; font-weight: bold; cursor: pointer; }
 button:disabled { opacity: 0.35; cursor: not-allowed; }
+.list-title { font-size: 18px; margin: 24px 0 8px; color: #aaa; }
+.room-list { list-style: none; padding: 0; max-width: 480px; margin: 0 auto; }
+.room-list li { display: flex; align-items: center; justify-content: space-between; gap: 8px;
+  padding: 8px 12px; margin: 6px 0; background: #ffffff10; border-radius: 10px; text-align: left; }
+.room-list li.empty { justify-content: center; color: #888; }
+.room-list .code { font-weight: 900; letter-spacing: 3px; color: #f5c518; }
+details summary { cursor: pointer; color: #aaa; }
 .room-code { font-size: 64px; letter-spacing: 12px; font-weight: 900; color: #f5c518; }
 .players { list-style: none; padding: 0; }
 .players li { padding: 4px; }
@@ -72,5 +79,12 @@ button.bet.blue { background: #1976d2; }
 @media (max-width: 600px) {
   .corners { flex-direction: column; align-items: center; }
   .corner { width: 100%; }
-  .room-code { font-size: 48px; }
+  .list-title { font-size: 18px; margin: 24px 0 8px; color: #aaa; }
+.room-list { list-style: none; padding: 0; max-width: 480px; margin: 0 auto; }
+.room-list li { display: flex; align-items: center; justify-content: space-between; gap: 8px;
+  padding: 8px 12px; margin: 6px 0; background: #ffffff10; border-radius: 10px; text-align: left; }
+.room-list li.empty { justify-content: center; color: #888; }
+.room-list .code { font-weight: 900; letter-spacing: 3px; color: #f5c518; }
+details summary { cursor: pointer; color: #aaa; }
+.room-code { font-size: 48px; }
 }

@@ -1,6 +1,6 @@
 import { socket, $, call, me, syncClock, loadSession, clearSession, showScreen } from './app.js';
 import { loadManifest } from './sprites.js';
-import { setupEntry } from './views/entry.js';
+import { setupEntry, watchLobby } from './views/entry.js';
 import { setupLobby, renderLobby } from './views/lobby.js';
 import { setupBetting, renderBetting, leaveBetting } from './views/betting.js';
 import { startFight, updateFightState, leaveFight } from './views/fight.js';
@@ -18,10 +18,16 @@ let phase = null;
 socket.on('connect', async () => {
   await syncClock();
   const session = loadSession();
-  if (!session) return;
+  if (!session) return watchLobby();
   const res = await call('room:rejoin', session);
-  if (res.ok) me.playerId = res.playerId;
-  else clearSession();
+  if (res.ok) {
+    me.playerId = res.playerId;
+    return;
+  }
+  // 방이 사라졌으면(서버 재시작 등) 입장 화면으로
+  clearSession();
+  showScreen('entry');
+  watchLobby();
 });
 
 socket.on('room:state', (state) => {

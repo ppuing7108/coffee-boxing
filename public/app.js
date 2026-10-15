@@ -1,5 +1,6 @@
 // 소켓, 세션, 서버 시각 등 화면들이 같이 쓰는 것
 const SESSION_KEY = 'coffee-boxing-session';
+const NICKNAME_KEY = 'coffee-boxing-nickname';
 
 export const socket = window.io();
 export const $ = (id) => document.getElementById(id);
@@ -25,6 +26,15 @@ export function saveSession(session) {
 
 export function loadSession() {
   try { return JSON.parse(localStorage.getItem(SESSION_KEY)); } catch { return null; }
+}
+
+// 마지막으로 쓴 닉네임 (다음 접속 때 미리 채움)
+export function saveNickname(nickname) {
+  try { localStorage.setItem(NICKNAME_KEY, nickname.trim()); } catch {}
+}
+
+export function loadNickname() {
+  try { return localStorage.getItem(NICKNAME_KEY) ?? ''; } catch { return ''; }
 }
 
 export function clearSession() {

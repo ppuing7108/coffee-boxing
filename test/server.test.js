@@ -100,3 +100,25 @@ test('같은 소켓이 방을 두 번 만들면 이전 방에서는 끊김 처�
   const old = server.manager.get(first.code);
   assert.equal(old.getPlayer(first.playerId).connected, false);
 });
+
+test('로비 목록을 구독하면 새 방이 보이고, 시작하면 사라진다', async () => {
+  const watcher = client();
+  const first = await call(watcher, 'lobby:watch');
+  assert.ok(Array.isArray(first.rooms));
+
+  const host = client();
+  const listed = new Promise((resolve) => watcher.on('lobby:list', (rooms) => {
+    const r = rooms.find((x) => x.host === '목록방장');
+    if (r) resolve(r);
+  }));
+  const created = await call(host, 'room:create', { nickname: '목록방장' });
+  assert.equal((await listed).code, created.code);
+
+  const guest = client();
+  await call(guest, 'room:join', { code: created.code, nickname: '손님' });
+  const gone = new Promise((resolve) => watcher.on('lobby:list', (rooms) => {
+    if (!rooms.some((x) => x.code === created.code)) resolve();
+  }));
+  await call(host, 'game:start');
+  await gone;
+});

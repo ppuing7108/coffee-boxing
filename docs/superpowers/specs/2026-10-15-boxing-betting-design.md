@@ -34,7 +34,8 @@ LOBBY ──(방장 시작, 2명 이상)──▶ BETTING ──(전원 선택 /
 ```
 
 ### 3.1 로비
-- 첫 화면에서 닉네임 입력 → "방 만들기"(4자리 영숫자 코드 발급) 또는 "코드로 입장".
+- 첫 화면에서 닉네임 입력 → "방 만들기"(4자리 영숫자 코드 발급) 또는 **참가 가능한 방 목록**(로비 상태 + 접속자 있는 방, 실시간 갱신)에서 "입장". 코드 직접 입력도 가능.
+- 마지막으로 쓴 닉네임은 브라우저(localStorage)에 저장해 다음 접속 때 미리 채운다.
 - 방 안에서 닉네임 중복 불가.
 - 방을 만든 사람이 방장. LOBBY 상태에서만 입장 가능, 게임 시작 후에는 신규 입장 거절(`GAME_IN_PROGRESS`).
 - 방장은 참가자 2명 이상일 때 시작 가능. 시작 순간 로비에서 접속이 끊겨 있던 사람은 참가자에서 빠진다.
@@ -132,11 +133,13 @@ LOBBY ──(방장 시작, 2명 이상)──▶ BETTING ──(전원 선택 /
 | C→S | `room:join` | `{code, nickname}` → `{ok, token}` / `ROOM_NOT_FOUND`, `NICKNAME_TAKEN`, `GAME_IN_PROGRESS` |
 | C→S | `room:rejoin` | `{code, token}` → `{ok}` / `INVALID_TOKEN` |
 | C→S | `time:sync` | `{}` → `{serverNow}` |
+| C→S | `lobby:watch` | `{}` → `{ok, rooms}` — 입장 화면에서 목록 구독, 방에 들어가면 해제 |
 | C→S | `game:start` | 방장 전용, 2명 이상 → `{ok}` / `NOT_HOST`, `NOT_ENOUGH_PLAYERS` |
 | C→S | `bet:place` | `{side}` → `{ok}` / `SIDE_FULL`, `ALREADY_BET`, `NOT_ACTIVE`, `NOT_BETTING_PHASE` |
 | C→S | `bet:closeNow` | 방장 전용 |
 | C→S | `game:restart` | 방장 전용, FINISHED에서만 |
 | S→C | `room:state` | 아래 참고 |
+| S→C | `lobby:list` | `[{code, host, players}]` — 참가 가능한 방 목록 (최근 방부터) |
 | S→C | `fight:script` | `{startAt, fighters:{red:{skin,name}, blue:{skin,name}}, script[]}` |
 
 ```js
@@ -178,7 +181,7 @@ test/
 
 ## 7. 화면
 
-1. **입장**: 닉네임 입력, 방 만들기 / 코드 입력 후 입장
+1. **입장**: 닉네임 입력(기억됨), 방 만들기, 참가 가능한 방 목록에서 입장 / 코드로 입장(접힘)
 2. **로비**: 방 코드(크게), 참가자 목록(방장 👑, 연결 상태), 방장에게만 "시작" 버튼
 3. **베팅**: 홍/청 선수 카드(이름, 외형), 양쪽 베팅자 목록 실시간, 남은 시간, 상한 도달 시 버튼 비활성화 + "가득 참", 방장 "바로 진행"
 4. **경기**: 링 배경, 양 선수 스프라이트, 상단 HP바 2개와 그 아래 코너별 베팅자 목록, 기술명/데미지 텍스트, KO 연출. 내가 건 코너 표시
